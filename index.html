@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>A Memory Game x Dall-e</title>
+    <title>A Memory Game x DALL·E 2</title>
 
     <link rel="stylesheet" href="styles.css">
 
     <meta charset="UTF-8">
-    <meta name="description" content="Memory Game with Dall-e Images">
+    <meta name="description" content="Memory Game with DALL·E 2 Images">
     <meta name="keywords" content="HTML, CSS, JavaScript">
     <meta name="author" content="Mira Ho">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="https://fonts.google.com/noto/specimen/Noto+Nastaliq+Urdu">
+    <link rel="stylesheet" href="https://fonts.google.com/specimen/Open+Sans">
+
 </head>
 <body>
 
     <main>
-        <div class="board"></div>
-        <div class="controls">
-            <div class="moves">0 moves</div>
-            <button>Reset</button>
+        <div id="game_box">
+            <div class="board"></div>
+            <div class="controls"> 
+                <h1>Memory x DALL·E 2</h1>
+                <div class="moves"><span class="move-count">0</span>moves</div>
+                <button>Restart</button>
+            </div>
+            <div class="end"></div> 
         </div>
-        <div class="win">You won!</div>
     </main>
    
 

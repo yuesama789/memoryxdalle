@@ -1,8 +1,7 @@
 const selectors = {
-    boardContainer: document.querySelector('.board-container'),
     moves: document.querySelector('.moves'),
     reset: document.querySelector('button'),
-    win: document.querySelector('.win'),
+    end: document.querySelector('.end'),
     cardBox: document.querySelector('.box')
 }
 
@@ -13,15 +12,60 @@ const state = {
 }
 
 const cards = [
-    '/img/shiba_inu.png',
-    '/img/tabby_cat.png',
-    '/img/raccoon.png',
-    '/img/squirrell.png'
+    [
+        '/img/shiba_inu.png',
+        '/img/tabby_cat.png',
+        '/img/raccoon.png',
+        '/img/squirrell.png'
+    ],
+    [
+        '/img/impress_1.png',
+        '/img/impress_2.png',
+        '/img/impress_3.png',
+        '/img/impress_4.png'
+    ],
+    [
+        '/img/paint_1.png',
+        '/img/paint_2.png',
+        '/img/paint_3.png',
+        '/img/paint_4.png'
+    ],
+    [
+        '/img/vader_1.png',
+        '/img/vader_2.png',
+        '/img/vader_3.png',
+        '/img/vader_4.png'
+    ],
+    [
+        '/img/witch_1.png',
+        '/img/witch_2.png',
+        '/img/witch_3.png',
+        '/img/witch_4.png'
+    ]
+    
 ]
+
+const setNames = [
+    'Pets with Hats',
+    'AI-mpressionism',
+    'Historically Accurate',
+    'Darth Vader in the style of Edward Hopper',
+    'A witch relaxing in the bath in her woodland cabin'
+]
+
+let playedSet = 0
 
 
 // RESTART GAME
 const resetGame = () => {
+
+    // closes end card if opened
+    selectors.end.classList.remove('opened')
+
+    // reset move counter
+    selectors.moves.innerHTML = `<span class="move-count">0</span> moves`
+
+    // resets all cards
     document.querySelectorAll('.card').forEach(card => {
         card.classList.remove('opened', 'matched')
     })
@@ -41,6 +85,7 @@ const shuffle = array => {
         const randomIndex = Math.floor(Math.random() * (index + 1))
         const original = clonedArray[index]
 
+        // switching card positions
         clonedArray[index] = clonedArray[randomIndex]
         clonedArray[randomIndex] = original
     }
@@ -51,7 +96,14 @@ const shuffle = array => {
 
 // BUILD GAME
 const initiateGame = () => {
-    const items = shuffle([...cards, ...cards])
+
+    // RANDOMIZE SET SELECT
+    let setCount = cards.length
+    const randomSet = Math.floor(Math.random() * (setCount))
+    playedSet = randomSet
+
+
+    const items = shuffle([...cards[randomSet], ...cards[randomSet],])
     let cardContainer = `
         <div class="board">
             ${items.map(item => `
@@ -77,6 +129,8 @@ const flipBackCards = () => {
     })
 
     state.openedCards = 0
+
+    
 }
 
 
@@ -105,7 +159,7 @@ const flipCard = card => {
 
         //Attempt Counter Update
         state.totalAttempts++
-        selectors.moves.innerText = `${state.totalAttempts} moves`
+        selectors.moves.innerHTML = `<span class="move-count">${state.totalAttempts}</span> moves`
         
         setTimeout(() => {
             flipBackCards()
@@ -114,13 +168,17 @@ const flipCard = card => {
 
     // end of game, when no cards are left
     if (!document.querySelectorAll('.card:not(.opened)').length) {
+        console.log('end of game')
         setTimeout(() => {
-            selectors.boardContainer.classList.add('opened')
-            selectors.win.innerHTML = `
+            selectors.end.classList.add('opened')
+            selectors.end.innerHTML = `
                 <span class="win-text">
-                    You won!<br />
-                    with <span class="highlight">${state.totalAttempts}</span> moves<br />
-                    under <span class="highlight">${state.totalTime}</span> seconds
+                    👍 Good Job!<br>
+                    You played the set<br>
+                    <span class="styled">${setNames[playedSet]}</span><br>
+                    and won the round
+                    with <span class="highlight">${state.totalAttempts}</span> moves.
+                    <button>Next Game</button>
                 </span>
             `
         }, 1000)
